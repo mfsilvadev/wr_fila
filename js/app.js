@@ -159,6 +159,7 @@ function update() {
 }
 
 //INIT
+//INIT
 window.addEventListener("DOMContentLoaded", () => {
   load();
   loadRanking();
@@ -174,7 +175,20 @@ window.addEventListener("DOMContentLoaded", () => {
     addFromEliminated
   });
 
-  document.getElementById("addBtn").onclick = addPlayer;
-  document.getElementById("loseAllBtn").onclick = loseAllLives;
+  const addBtn = document.getElementById("addBtn");
+  if (addBtn) addBtn.onclick = addPlayer;
+
+  const loseAllBtn = document.getElementById("loseAllBtn");
+  if (loseAllBtn) loseAllBtn.onclick = loseAllLives;
+
   document.getElementById("searchPlayer")?.addEventListener("input", update);
+
+  // 👇 👇 👇 ADICIONA ISSO AQUI
+  window.addEventListener("storage", (event) => {
+    if (event.key === "wrState") { // 👈 MUITO IMPORTANTE
+      load();
+      tryFillParty();
+      update();
+    }
+  });
 });
