@@ -68,14 +68,14 @@ state.queue.forEach(p => {
   laneCounters[mainLane]++;
   const position = laneCounters[mainLane];
 
-  el.innerHTML = `
+    el.innerHTML = `
     <span>
-      <span class="lane-priority lane-${mainLane}">
+        <span class="lane-priority lane-${mainLane}">
         ${mainLane.toUpperCase()} #${position}
-      </span>
-      ${p.name} ❤️${lives}
+        </span>
+        ${p.name} (${lanes.join(" / ")}) ❤️${lives}
     </span>
-  `;
+    `;
 
   queueDiv.appendChild(el); 
 });
