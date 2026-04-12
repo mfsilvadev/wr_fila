@@ -131,6 +131,18 @@ button:hover {
   cursor: pointer;
 }
 
+.lane-priority {
+  font-weight: bold;
+  margin-right: 6px;
+}
+
+/* cores por lane */
+.lane-top { color: #ff5555; }
+.lane-jg { color: #50fa7b; }
+.lane-mid { color: #8be9fd; }
+.lane-adc { color: #f1fa8c; }
+.lane-sup { color: #bd93f9; }
+
 /* quando abre (nem todos navegadores respeitam, mas ajuda) */
 .lane-select option {
   background: #1a1a1a;

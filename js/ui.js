@@ -44,24 +44,41 @@ export function render(handlers) {
   });
 
   // ⏳ FILA
-  state.queue.forEach(p => {
-    const el = document.createElement("div");
-    el.className = "card";
-    el.draggable = true;
+  const laneCounters = {};
 
-    el.addEventListener("dragstart", e => {
-      e.dataTransfer.setData("playerId", p.id);
-      e.dataTransfer.setData("source", "queue");
-    });
+state.queue.forEach(p => {
+  const el = document.createElement("div");
+  el.className = "card";
+  el.draggable = true;
 
-    const lanes = p.lanes || [p.lane];
-
-    el.innerHTML = `
-      <span>${p.name} (${lanes.join(" / ")}) ❤️${p.lives}</span>
-    `;
-
-    queueDiv.appendChild(el);
+  el.addEventListener("dragstart", e => {
+    e.dataTransfer.setData("playerId", p.id);
+    e.dataTransfer.setData("source", "queue");
   });
+
+  const lanes = p.lanes || [p.lane];
+  const lives = p.lives ?? 1;
+
+  const mainLane = lanes[0];
+
+  if (!laneCounters[mainLane]) {
+    laneCounters[mainLane] = 0;
+  }
+
+  laneCounters[mainLane]++;
+  const position = laneCounters[mainLane];
+
+  el.innerHTML = `
+    <span>
+      <span class="lane-priority lane-${mainLane}">
+        ${mainLane.toUpperCase()} #${position}
+      </span>
+      ${p.name} ❤️${lives}
+    </span>
+  `;
+
+  queueDiv.appendChild(el); 
+});
 
   // 🧲 DROP
   partyDiv.addEventListener("dragover", e => e.preventDefault());
