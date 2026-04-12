@@ -119,9 +119,26 @@ button:hover {
 }
 
 /* lanes multiselect */
-#laneSelect {
-  display: flex;
-  gap: 8px;
+.lane-select {
+  background: rgba(255,255,255,0.08); /* 👈 mesmo estilo dos inputs */
+  color: white;
+
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+
+  padding: 4px 6px;
+  outline: none;
+  cursor: pointer;
+}
+
+/* quando abre (nem todos navegadores respeitam, mas ajuda) */
+.lane-select option {
+  background: #1a1a1a;
+  color: white;
+}
+
+.lane-select:hover {
+  background: rgba(255,255,255,0.12);
 }
 
 #laneSelect label {
@@ -169,4 +186,46 @@ button:hover {
 .card:hover {
   transform: translateY(-2px);
   background: rgba(255,255,255,0.08);
+}
+
+.footer {
+  margin-top: 30px;
+  padding: 15px;
+
+  background: rgba(255,255,255,0.03);
+  border-top: 1px solid rgba(255,255,255,0.08);
+
+  text-align: center;
+  font-size: 14px;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.footer a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  margin: 0 10px;
+
+  transition: 0.2s;
+}
+
+.footer a:hover {
+  color: white;
+  text-shadow: 0 0 5px rgba(255,255,255,0.3);
+}
+
+/* separa seções */
+.socials {
+  display: flex;
+  gap: 10px;
+}
+
+.support a {
+  color: #ff6b6b;
+  font-weight: bold;
 }

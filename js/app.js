@@ -15,13 +15,13 @@ function createPlayer(name, lanes, lives) {
   };
 }
 
-// 🧠 pega lanes selecionadas
+// 🧠 lanes selecionadas
 function getSelectedLanes() {
   const checkboxes = document.querySelectorAll("#laneSelect input:checked");
   return Array.from(checkboxes).map(cb => cb.value);
 }
 
-// ➕ adicionar player manual
+// ➕ adicionar manual
 function addPlayer() {
   const nameInput = document.getElementById("name");
 
@@ -59,7 +59,14 @@ function loseLife(id) {
 
   if (morreu && player) {
     addLoss(player.name);
+
     removeFromParty(id);
+
+    // 👇 manda pra lista de eliminados
+    state.eliminated.push({
+      name: player.name
+    });
+
     tryFillParty();
   }
 
@@ -79,6 +86,8 @@ function loseAllLives() {
   mortos.forEach(id => {
     const player = state.party.find(p => p.id === id);
     if (player) addLoss(player.name);
+
+    state.eliminated.push({ name: player.name });
   });
 
   mortos.forEach(id => removeFromParty(id));
@@ -88,13 +97,10 @@ function loseAllLives() {
 }
 
 // ➕ histórico
-function addFromHistory(name) {
-  const lanes = getSelectedLanes();
-  if (lanes.length === 0) return;
+function addFromHistory(name, lane) {
+  const player = createPlayer(name, [lane], 1);
 
-  const player = createPlayer(name, lanes, 1);
-
-  if (hasSpace() && lanes.some(l => !laneExists(l))) {
+  if (hasSpace() && !laneExists(lane)) {
     addToParty(player);
   } else {
     addToQueue(player);
@@ -103,7 +109,22 @@ function addFromHistory(name) {
   update();
 }
 
-// 🖱️ drag → party
+// 💀 voltar dos eliminados
+function addFromEliminated(name, lane, index) {
+  const player = createPlayer(name, [lane], 1);
+
+  if (hasSpace() && !laneExists(lane)) {
+    addToParty(player);
+  } else {
+    addToQueue(player);
+  }
+
+  state.eliminated.splice(index, 1);
+
+  update();
+}
+
+// 🖱️ drag
 function moveToParty(id) {
   const player = state.queue.find(p => p.id === id);
   if (!player) return;
@@ -114,7 +135,6 @@ function moveToParty(id) {
   update();
 }
 
-// 🖱️ drag → fila
 function moveToQueue(id) {
   const player = state.party.find(p => p.id === id);
   if (!player) return;
@@ -134,7 +154,8 @@ function update() {
     addLife,
     addFromHistory,
     moveToParty,
-    moveToQueue
+    moveToQueue,
+    addFromEliminated
   });
 }
 
@@ -150,7 +171,8 @@ window.addEventListener("DOMContentLoaded", () => {
     addLife,
     addFromHistory,
     moveToParty,
-    moveToQueue
+    moveToQueue,
+    addFromEliminated
   });
 
   document.getElementById("addBtn").onclick = addPlayer;

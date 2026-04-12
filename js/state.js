@@ -1,4 +1,5 @@
 export const state = {
   party: [],
-  queue: []
+  queue: [],
+  eliminated: [] // 👈 NOVO
 };

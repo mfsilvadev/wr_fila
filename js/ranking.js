@@ -11,21 +11,23 @@ export function saveRanking() {
   localStorage.setItem(KEY, JSON.stringify(ranking));
 }
 
-function ensurePlayer(name) {
+function ensurePlayer(name, lanes = []) {
   if (!ranking[name]) {
-    ranking[name] = { wins: 0, losses: 0 };
+    ranking[name] = { wins: 0, losses: 0, lanes };
+  } else if (!ranking[name].lanes?.length && lanes.length) {
+    ranking[name].lanes = lanes;
   }
 }
 
-export function addWin(name) {
-  ensurePlayer(name);
-  ranking[name].wins++;
+export function addLoss(name, lanes = []) {
+  ensurePlayer(name, lanes);
+  ranking[name].losses++;
   saveRanking();
 }
 
-export function addLoss(name) {
-  ensurePlayer(name);
-  ranking[name].losses++;
+export function addWin(name, lanes = []) {
+  ensurePlayer(name, lanes);
+  ranking[name].wins++;
   saveRanking();
 }
 
