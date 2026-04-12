@@ -144,6 +144,14 @@ function moveToQueue(id) {
   update();
 }
 
+function resetAll() {
+  if (!confirm("Tem certeza que quer apagar tudo?")) return;
+
+  localStorage.clear();
+
+  location.reload();
+}
+
 //update
 function update() {
   save();
@@ -180,6 +188,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const loseAllBtn = document.getElementById("loseAllBtn");
   if (loseAllBtn) loseAllBtn.onclick = loseAllLives;
+
+  const resetBtn = document.getElementById("resetBtn");
+  if (resetBtn) resetBtn.onclick = resetAll;
 
   document.getElementById("searchPlayer")?.addEventListener("input", update);
 
