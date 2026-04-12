@@ -1,0 +1,57 @@
+body {
+  margin: 0;
+  background: transparent; /* 🔥 ESSENCIAL pro OBS */
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
+
+/* layout lateral */
+.overlay {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* painéis */
+.panel {
+  width: 250px;
+
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(6px);
+
+  border-radius: 12px;
+  padding: 10px;
+
+  color: white;
+}
+
+/* títulos */
+.panel h2 {
+  margin: 0 0 10px 0;
+  font-size: 16px;
+}
+
+/* cards */
+.card {
+  background: rgba(255,255,255,0.08);
+  margin-bottom: 5px;
+  padding: 6px;
+  border-radius: 6px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* lanes */
+.top { color: #ff5555; }
+.jg { color: #50fa7b; }
+.mid { color: #8be9fd; }
+.adc { color: #f1fa8c; }
+.sup { color: #bd93f9; }
+
+/* destaque do próximo */
+#queue .card:first-child {
+  border: 1px solid #f1fa8c;
+  box-shadow: 0 0 10px rgba(241,250,140,0.3);
+}
