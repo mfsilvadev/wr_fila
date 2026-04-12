@@ -5,7 +5,7 @@ import { addToParty, removeFromParty, laneExists, hasSpace, decrementLife, incre
 import { render } from "./ui.js";
 import { loadRanking, addLoss } from "./ranking.js";
 
-// 🔧 cria player
+//cria player
 function createPlayer(name, lanes, lives) {
   return {
     id: Date.now(),
@@ -15,13 +15,13 @@ function createPlayer(name, lanes, lives) {
   };
 }
 
-// 🧠 lanes selecionadas
+//lanes selecionadas
 function getSelectedLanes() {
   const checkboxes = document.querySelectorAll("#laneSelect input:checked");
   return Array.from(checkboxes).map(cb => cb.value);
 }
 
-// ➕ adicionar manual
+//adicionar manual
 function addPlayer() {
   const nameInput = document.getElementById("name");
 
@@ -45,14 +45,14 @@ function addPlayer() {
   update();
 }
 
-// ❌ remover
+//remover
 function removePlayer(id) {
   removeFromParty(id);
   tryFillParty();
   update();
 }
 
-// 💔 perdeu
+//perdeu
 function loseLife(id) {
   const player = state.party.find(p => p.id === id);
   const morreu = decrementLife(id);
@@ -62,7 +62,6 @@ function loseLife(id) {
 
     removeFromParty(id);
 
-    // 👇 manda pra lista de eliminados
     state.eliminated.push({
       name: player.name
     });
@@ -73,13 +72,13 @@ function loseLife(id) {
   update();
 }
 
-// 🔁 continua
+//continua
 function addLife(id) {
   incrementLife(id);
   update();
 }
 
-// 💥 todos perdem
+//todos perdem
 function loseAllLives() {
   const mortos = decrementAllLives();
 
@@ -96,7 +95,7 @@ function loseAllLives() {
   update();
 }
 
-// ➕ histórico
+//histórico
 function addFromHistory(name, lane) {
   const player = createPlayer(name, [lane], 1);
 
@@ -109,7 +108,7 @@ function addFromHistory(name, lane) {
   update();
 }
 
-// 💀 voltar dos eliminados
+//voltar dos eliminados
 function addFromEliminated(name, lane, index) {
   const player = createPlayer(name, [lane], 1);
 
@@ -124,7 +123,7 @@ function addFromEliminated(name, lane, index) {
   update();
 }
 
-// 🖱️ drag
+//drag
 function moveToParty(id) {
   const player = state.queue.find(p => p.id === id);
   if (!player) return;
@@ -145,7 +144,7 @@ function moveToQueue(id) {
   update();
 }
 
-// 🔄 update
+//update
 function update() {
   save();
   render({
@@ -159,7 +158,7 @@ function update() {
   });
 }
 
-// 🚀 INIT
+//INIT
 window.addEventListener("DOMContentLoaded", () => {
   load();
   loadRanking();

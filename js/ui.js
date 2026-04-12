@@ -16,7 +16,7 @@ export function render(handlers) {
   if (historyDiv) historyDiv.innerHTML = "";
   if (eliminatedDiv) eliminatedDiv.innerHTML = "";
 
-  // 🎮 PARTY
+//PARTY
   state.party.forEach(p => {
     const el = document.createElement("div");
     el.className = `card ${p.assignedLane}`;
@@ -43,7 +43,7 @@ export function render(handlers) {
     partyDiv.appendChild(el);
   });
 
-  // ⏳ FILA
+//FILA
   const laneCounters = {};
 
 state.queue.forEach(p => {
@@ -80,7 +80,7 @@ state.queue.forEach(p => {
   queueDiv.appendChild(el); 
 });
 
-  // 🧲 DROP
+//DROP
   partyDiv.addEventListener("dragover", e => e.preventDefault());
   queueDiv.addEventListener("dragover", e => e.preventDefault());
 
@@ -100,7 +100,7 @@ state.queue.forEach(p => {
     if (source === "party") moveToQueue(id);
   });
 
-  // 🔎 HISTÓRICO
+//HISTÓRICO
   if (historyDiv && searchInput) {
     const search = searchInput.value.toLowerCase();
 
@@ -121,7 +121,7 @@ state.queue.forEach(p => {
       });
   }
 
-  // 💀 ELIMINADOS
+//ELIMINADOS
 if (historyDiv && searchInput) {
   const search = searchInput.value.toLowerCase();
 
