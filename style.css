@@ -1,0 +1,167 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: radial-gradient(circle at top, #1a1a1a, #0d0d0d);
+  color: #eee;
+}
+
+/* 🔥 CARD PRINCIPAL */
+.app-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 20px;
+
+  background: rgba(30, 30, 30, 0.6);
+  backdrop-filter: blur(10px);
+
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+/* seção de inputs */
+.form-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  padding: 15px;
+  margin-bottom: 20px;
+
+  background: rgba(255,255,255,0.04);
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* inputs */
+
+input {
+  background: rgba(255,255,255,0.08);
+  color: white;
+}
+
+input::placeholder {
+  color: rgba(255,255,255,0.5);
+}
+
+input, button {
+  padding: 8px;
+  border-radius: 6px;
+  border: none;
+}
+
+/* botão */
+button {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+button:hover {
+  background: rgba(255,255,255,0.2);
+}
+
+/* layout principal */
+.container {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+/* caixas */
+.box {
+  flex: 1;
+
+  background: rgba(255,255,255,0.03);
+  padding: 15px;
+  border-radius: 12px;
+
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+.box h2 {
+  margin-top: 0;
+  margin-bottom: 10px;
+
+  font-size: 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  padding-bottom: 5px;
+}
+
+/* cards individuais */
+.card {
+  background: rgba(255,255,255,0.05);
+  padding: 10px;
+  margin: 5px 0;
+  border-radius: 8px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* lanes */
+.top { color: #ff5555; }
+.jg { color: #50fa7b; }
+.mid { color: #8be9fd; }
+.adc { color: #f1fa8c; }
+.sup { color: #bd93f9; }
+
+/* bloqueado */
+.blocked {
+  opacity: 0.5;
+}
+
+/* lanes multiselect */
+#laneSelect {
+  display: flex;
+  gap: 8px;
+}
+
+#laneSelect label {
+  background: rgba(255,255,255,0.05);
+  padding: 5px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#laneSelect input {
+  margin-right: 5px;
+}
+
+.fade-in {
+  animation: fadeIn 0.25s ease;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(5px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+.drop-target {
+  outline: 2px dashed rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.05);
+  transition: 0.2s;
+}
+
+.dragging-from-party {
+  opacity: 0.7;
+}
+
+.dragging-from-queue {
+  opacity: 0.7;
+}
+.card {
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.08);
+}
