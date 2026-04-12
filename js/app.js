@@ -183,7 +183,20 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("searchPlayer")?.addEventListener("input", update);
 
-  // 👇 👇 👇 ADICIONA ISSO AQUI
+  let lastState = "";
+
+    setInterval(() => {
+    const current = localStorage.getItem("wrState");
+
+    if (current !== lastState) {
+        lastState = current;
+
+        load();
+        tryFillParty();
+        update();
+    }
+    }, 300000); // 👈 1 segundo (pode reduzir depois)
+
   window.addEventListener("storage", (event) => {
     if (event.key === "wrState") { // 👈 MUITO IMPORTANTE
       load();
