@@ -3,6 +3,8 @@ body {
   font-family: Arial, sans-serif;
   background: radial-gradient(circle at top, #1a1a1a, #0d0d0d);
   color: #eee;
+  min-height: 100vh;
+  flex-direction: column;
 }
 #party, #queue {
   min-height: 120px;
@@ -61,6 +63,7 @@ input, button {
 button {
   background: rgba(255,255,255,0.1);
   border: 1px solid rgba(255,255,255,0.1);
+  color: aliceblue
 }
 
 button:hover {
@@ -162,6 +165,15 @@ button:hover {
 
 #laneSelect input {
   margin-right: 5px;
+}
+
+#history::-webkit-scrollbar {
+  width: 6px;
+}
+
+#history::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
+  border-radius: 4px;
 }
 
 .fade-in {
