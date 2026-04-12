@@ -4,6 +4,12 @@ body {
   background: radial-gradient(circle at top, #1a1a1a, #0d0d0d);
   color: #eee;
 }
+#party, #queue {
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
 
 /* 🔥 CARD PRINCIPAL */
 .app-container {
@@ -145,9 +151,8 @@ button:hover {
 }
 
 .drop-target {
-  outline: 2px dashed rgba(255,255,255,0.3);
+  outline: 2px dashed #888;
   background: rgba(255,255,255,0.05);
-  transition: 0.2s;
 }
 
 .dragging-from-party {
