@@ -17,7 +17,7 @@ function ensurePlayer(name) {
       wins: 0,
       losses: 0,
       lastLane: null,
-      entries: 0 // 👈 controle de entradas
+      entries: 0
     };
   }
 }

@@ -2,13 +2,13 @@ import { state } from "./state.js";
 import { laneExists } from "./party.js";
 import { getAllPlayers, getPlayerLane } from "./ranking.js";
 
-// 🎮 SVGs
+// 🎮 Ícones melhores (Lucide)
 const laneIcons = {
-  top: `<svg viewBox="0 0 24 24"><path fill="currentColor" d="M4 20L20 4H14L4 14V20Z"/></svg>`,
-  jg: `<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C8 6 6 10 6 14A6 6 0 0018 14C18 10 16 6 12 2Z"/></svg>`,
-  mid: `<svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 12L12 3L21 12L12 21Z"/></svg>`,
-  adc: `<svg viewBox="0 0 24 24"><path fill="currentColor" d="M2 12L22 2L12 22L10 14Z"/></svg>`,
-  sup: `<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2L15 8H21L16 12L18 18L12 14L6 18L8 12L3 8H9Z"/></svg>`
+  top: `<i data-lucide="arrow-up"></i>`,
+  jg: `<i data-lucide="tree-pine"></i>`,
+  mid: `<i data-lucide="diamond"></i>`,
+  adc: `<i data-lucide="crosshair"></i>`,
+  sup: `<i data-lucide="shield"></i>`
 };
 
 // 🧠 render de lanes
@@ -36,36 +36,61 @@ export function render(handlers) {
   queueDiv.innerHTML = "";
   if (historyDiv) historyDiv.innerHTML = "";
 
-  // 🎮 PARTY
-  state.party.forEach(p => {
+  // 🎮 PARTY COM SLOTS
+  const maxPartySize = 4;
+
+  for (let i = 0; i < maxPartySize; i++) {
+    const p = state.party[i];
     const el = document.createElement("div");
-    el.className = `card ${p.assignedLane}`;
-    el.draggable = true;
 
-    el.addEventListener("dragstart", e => {
-      e.dataTransfer.setData("playerId", p.id);
-      e.dataTransfer.setData("source", "party");
-    });
+    if (p) {
+      el.className = `card ${p.assignedLane}`;
+      el.draggable = true;
 
-    el.innerHTML = `
-      <span>
-        ${p.name}
-        ${renderLaneIcons(p.lanes, p.assignedLane)}
-        ❤️${p.lives}
-      </span>
-      <div>
-        <button class="lose">💔</button>
-        <button class="continue">🔁</button>
-        <button class="remove">X</button>
-      </div>
-    `;
+      el.addEventListener("dragstart", e => {
+        e.dataTransfer.setData("playerId", p.id);
+        e.dataTransfer.setData("source", "party");
+      });
 
-    el.querySelector(".remove").onclick = () => remove(p.id);
-    el.querySelector(".lose").onclick = () => loseLife(p.id);
-    el.querySelector(".continue").onclick = () => addLife(p.id);
+      el.innerHTML = `
+        <span>
+          ${p.name}
+          ${renderLaneIcons(p.lanes, p.assignedLane)}
+
+          <span class="lives">
+            <i data-lucide="heart"></i> ${p.lives}
+          </span>
+        </span>
+
+        <div>
+          <button class="icon-btn lose" title="Remover vida">
+            <i data-lucide="heart-off"></i>
+          </button>
+
+          <button class="icon-btn continue" title="Adicionar vida">
+            <i data-lucide="heart"></i>
+          </button>
+
+          <button class="icon-btn remove" title="Remover jogador">
+            <i data-lucide="x"></i>
+          </button>
+        </div>
+      `;
+
+      el.querySelector(".remove").onclick = () => remove(p.id);
+      el.querySelector(".lose").onclick = () => loseLife(p.id);
+      el.querySelector(".continue").onclick = () => addLife(p.id);
+
+    } else {
+      el.className = "card empty";
+
+      el.innerHTML = `
+        <span>+ Vaga disponível</span>
+      `;
+    }
 
     partyDiv.appendChild(el);
-  });
+  }
 
   // ⏳ FILA
   const laneCounters = {};
@@ -95,9 +120,13 @@ export function render(handlers) {
         <span class="lane-priority lane-${mainLane}">
           ${mainLane.toUpperCase()} #${position}
         </span>
+
         ${p.name}
         ${renderLaneIcons(lanes)}
-        ❤️${lives}
+
+        <span class="lives">
+          <i data-lucide="heart"></i> ${lives}
+        </span>
       </span>
     `;
 
@@ -124,7 +153,7 @@ export function render(handlers) {
     if (source === "party") moveToQueue(id);
   });
 
-  // 🔎 HISTÓRICO COM LANE SALVA
+  // 🔎 HISTÓRICO
   if (historyDiv && searchInput) {
     const search = searchInput.value.toLowerCase();
 
@@ -147,7 +176,9 @@ export function render(handlers) {
             <option value="sup" ${savedLane === "sup" ? "selected" : ""}>Support</option>
           </select>
 
-          <button class="add">➕</button>
+          <button class="icon-btn add" title="Adicionar jogador">
+            <i data-lucide="plus"></i>
+          </button>
         `;
 
         const select = el.querySelector(".lane-select");
@@ -158,5 +189,10 @@ export function render(handlers) {
 
         historyDiv.appendChild(el);
       });
+  }
+
+  // 🎨 renderiza ícones
+  if (window.lucide) {
+    window.lucide.createIcons();
   }
 }
