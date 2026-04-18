@@ -3,14 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <title>Fila Wild Rift</title>
-</head>
 <link rel="stylesheet" href="style.css">
+</head>
 
 <body>
 
 <div class="app-container">
 
-  <h1>Fila Wild Rift</h1>
+  <h1>
+    Fila Wild Rift 
+    <button id="configBtn">⚙️</button>
+  </h1>
 
   <div class="form-section">
     <input id="name" placeholder="Nome">
@@ -27,11 +30,9 @@
     <button id="addBtn">Adicionar</button>
   </div>
 
-
   <div class="container">
     <div class="box">
       <h2>Party <button id="loseAllBtn">Todos perderam</button></h2>
-      
       <div id="party"></div>
     </div>
 
@@ -48,6 +49,33 @@
 </div>
 
 <button id="resetBtn">🧹 Resetar tudo</button>
+
+<!-- ⚙️ MODAL DE CONFIG -->
+<div id="configModal" class="modal hidden">
+  <div class="modal-content">
+
+    <h3>⚙️ Configurações</h3>
+
+    <label>Sua Lane:</label>
+    <select id="configHostLane">
+      <option value="">Nenhuma</option>
+      <option value="top">Top</option>
+      <option value="jg">Jungle</option>
+      <option value="mid">Mid</option>
+      <option value="adc">ADC</option>
+      <option value="sup">Support</option>
+    </select>
+
+    <label>Máx entradas por player:</label>
+    <input id="configMaxEntries" type="number" min="1" value="3"/>
+
+    <div class="modal-actions">
+      <button id="saveConfig">Salvar</button>
+      <button id="closeConfig">Fechar</button>
+    </div>
+
+  </div>
+</div>
 
 <script type="module" src="js/app.js"></script>
 

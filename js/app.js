@@ -58,7 +58,7 @@ function loseLife(id) {
   const morreu = decrementLife(id);
 
   if (morreu && player) {
-    addLoss(player.name);
+    addLoss(player.name, player.assignedLane);
 
     removeFromParty(id);
 
@@ -84,7 +84,7 @@ function loseAllLives() {
 
   mortos.forEach(id => {
     const player = state.party.find(p => p.id === id);
-    if (player) addLoss(player.name);
+    if (player) addLoss(player.name, player.assignedLane);
 
     state.eliminated.push({ name: player.name });
   });
@@ -206,13 +206,53 @@ window.addEventListener("DOMContentLoaded", () => {
         tryFillParty();
         update();
     }
-    }, 300000); // 👈 1 segundo (pode reduzir depois)
+    }, 300000);
 
   window.addEventListener("storage", (event) => {
-    if (event.key === "wrState") { // 👈 MUITO IMPORTANTE
+    if (event.key === "wrState") {
       load();
       tryFillParty();
       update();
     }
   });
+
+// ⚙️ CONFIG MODAL
+const configBtn = document.getElementById("configBtn");
+const modal = document.getElementById("configModal");
+
+const hostLaneInput = document.getElementById("configHostLane");
+const maxEntriesInput = document.getElementById("configMaxEntries");
+
+const saveBtn = document.getElementById("saveConfig");
+const closeBtn = document.getElementById("closeConfig");
+
+// abrir
+if (configBtn) {
+  configBtn.onclick = () => {
+    modal.classList.remove("hidden");
+
+    hostLaneInput.value = state.config.hostLane || "";
+    maxEntriesInput.value = state.config.maxEntries;
+  };
+}
+
+// fechar
+if (closeBtn) {
+  closeBtn.onclick = () => {
+    modal.classList.add("hidden");
+  };
+}
+
+// salvar
+if (saveBtn) {
+  saveBtn.onclick = () => {
+    state.config.hostLane = hostLaneInput.value || null;
+    state.config.maxEntries = parseInt(maxEntriesInput.value);
+
+    save();
+    update();
+
+    modal.classList.add("hidden");
+  };
+}
 });

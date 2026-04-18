@@ -1,5 +1,10 @@
 export const state = {
   party: [],
   queue: [],
-  eliminated: []
+  eliminated: [],
+
+  config: {
+    hostLane: null,  
+    maxEntries: 3    
+  }
 };

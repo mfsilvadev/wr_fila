@@ -1,19 +1,29 @@
 import { state } from "./state.js";
 
-export function laneExists(lane) {
-  return state.party.some(p => p.assignedLane === lane);
-}
-
 export function hasSpace() {
   return state.party.length < 4;
 }
 
+export function laneExists(lane) {
+  const laneInParty = state.party.some(p => p.assignedLane === lane);
+
+  // 👇 bloqueia lane do host
+  const isHostLane = state.config.hostLane === lane;
+
+  return laneInParty || isHostLane;
+}
+
 export function assignLane(player) {
-  return player.lanes.find(lane => !laneExists(lane));
+  const lanes = player.lanes || [player.lane];
+
+  return lanes.find(lane => !laneExists(lane));
 }
 
 export function addToParty(player) {
-  player.assignedLane = assignLane(player) || player.lanes[0];
+  const lane = assignLane(player);
+  if (!lane) return;
+
+  player.assignedLane = lane;
   state.party.push(player);
 }
 
@@ -31,7 +41,9 @@ export function decrementLife(id) {
 
 export function incrementLife(id) {
   const player = state.party.find(p => p.id === id);
-  if (player) player.lives++;
+  if (!player) return;
+
+  player.lives++;
 }
 
 export function decrementAllLives() {

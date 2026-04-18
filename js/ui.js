@@ -1,22 +1,42 @@
 import { state } from "./state.js";
 import { laneExists } from "./party.js";
-import { getAllPlayers } from "./ranking.js";
+import { getAllPlayers, getPlayerLane } from "./ranking.js";
+
+// 🎮 SVGs
+const laneIcons = {
+  top: `<svg viewBox="0 0 24 24"><path fill="currentColor" d="M4 20L20 4H14L4 14V20Z"/></svg>`,
+  jg: `<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C8 6 6 10 6 14A6 6 0 0018 14C18 10 16 6 12 2Z"/></svg>`,
+  mid: `<svg viewBox="0 0 24 24"><path fill="currentColor" d="M3 12L12 3L21 12L12 21Z"/></svg>`,
+  adc: `<svg viewBox="0 0 24 24"><path fill="currentColor" d="M2 12L22 2L12 22L10 14Z"/></svg>`,
+  sup: `<svg viewBox="0 0 24 24"><path fill="currentColor" d="M12 2L15 8H21L16 12L18 18L12 14L6 18L8 12L3 8H9Z"/></svg>`
+};
+
+// 🧠 render de lanes
+function renderLaneIcons(lanes, assignedLane = null) {
+  return lanes.map(lane => {
+    const isMain = lane === assignedLane;
+
+    return `
+      <span class="lane-icon ${isMain ? "main" : ""} lane-${lane}">
+        ${laneIcons[lane]}
+      </span>
+    `;
+  }).join("");
+}
 
 export function render(handlers) {
-  const { remove, loseLife, addLife, addFromHistory, moveToParty, moveToQueue, addFromEliminated } = handlers;
+  const { remove, loseLife, addLife, addFromHistory, moveToParty, moveToQueue } = handlers;
 
   const partyDiv = document.getElementById("party");
   const queueDiv = document.getElementById("queue");
   const historyDiv = document.getElementById("history");
   const searchInput = document.getElementById("searchPlayer");
-  const eliminatedDiv = document.getElementById("eliminated");
 
   partyDiv.innerHTML = "";
   queueDiv.innerHTML = "";
   if (historyDiv) historyDiv.innerHTML = "";
-  if (eliminatedDiv) eliminatedDiv.innerHTML = "";
 
-//PARTY
+  // 🎮 PARTY
   state.party.forEach(p => {
     const el = document.createElement("div");
     el.className = `card ${p.assignedLane}`;
@@ -28,7 +48,11 @@ export function render(handlers) {
     });
 
     el.innerHTML = `
-      <span>${p.name} (${p.assignedLane}) ❤️${p.lives}</span>
+      <span>
+        ${p.name}
+        ${renderLaneIcons(p.lanes, p.assignedLane)}
+        ❤️${p.lives}
+      </span>
       <div>
         <button class="lose">💔</button>
         <button class="continue">🔁</button>
@@ -43,44 +67,44 @@ export function render(handlers) {
     partyDiv.appendChild(el);
   });
 
-//FILA
+  // ⏳ FILA
   const laneCounters = {};
 
-state.queue.forEach(p => {
-  const el = document.createElement("div");
-  el.className = "card";
-  el.draggable = true;
+  state.queue.forEach(p => {
+    const el = document.createElement("div");
+    el.className = "card";
+    el.draggable = true;
 
-  el.addEventListener("dragstart", e => {
-    e.dataTransfer.setData("playerId", p.id);
-    e.dataTransfer.setData("source", "queue");
-  });
+    el.addEventListener("dragstart", e => {
+      e.dataTransfer.setData("playerId", p.id);
+      e.dataTransfer.setData("source", "queue");
+    });
 
-  const lanes = p.lanes || [p.lane];
-  const lives = p.lives ?? 1;
+    const lanes = p.lanes || [p.lane];
+    const lives = p.lives ?? 1;
 
-  const mainLane = lanes[0];
+    const mainLane = lanes[0];
 
-  if (!laneCounters[mainLane]) {
-    laneCounters[mainLane] = 0;
-  }
+    if (!laneCounters[mainLane]) laneCounters[mainLane] = 0;
+    laneCounters[mainLane]++;
 
-  laneCounters[mainLane]++;
-  const position = laneCounters[mainLane];
+    const position = laneCounters[mainLane];
 
     el.innerHTML = `
-    <span>
+      <span>
         <span class="lane-priority lane-${mainLane}">
-        ${mainLane.toUpperCase()} #${position}
+          ${mainLane.toUpperCase()} #${position}
         </span>
-        ${p.name} (${lanes.join(" / ")}) ❤️${lives}
-    </span>
+        ${p.name}
+        ${renderLaneIcons(lanes)}
+        ❤️${lives}
+      </span>
     `;
 
-  queueDiv.appendChild(el); 
-});
+    queueDiv.appendChild(el);
+  });
 
-//DROP
+  // 🧲 DROP
   partyDiv.addEventListener("dragover", e => e.preventDefault());
   queueDiv.addEventListener("dragover", e => e.preventDefault());
 
@@ -100,58 +124,39 @@ state.queue.forEach(p => {
     if (source === "party") moveToQueue(id);
   });
 
-//HISTÓRICO
+  // 🔎 HISTÓRICO COM LANE SALVA
   if (historyDiv && searchInput) {
     const search = searchInput.value.toLowerCase();
 
     getAllPlayers()
       .filter(name => name.toLowerCase().includes(search))
       .forEach(name => {
+        const savedLane = getPlayerLane(name);
+
         const el = document.createElement("div");
         el.className = "card";
 
         el.innerHTML = `
           <span>${name}</span>
+
+          <select class="lane-select">
+            <option value="top" ${savedLane === "top" ? "selected" : ""}>Top</option>
+            <option value="jg" ${savedLane === "jg" ? "selected" : ""}>Jungle</option>
+            <option value="mid" ${savedLane === "mid" ? "selected" : ""}>Mid</option>
+            <option value="adc" ${savedLane === "adc" ? "selected" : ""}>ADC</option>
+            <option value="sup" ${savedLane === "sup" ? "selected" : ""}>Support</option>
+          </select>
+
           <button class="add">➕</button>
         `;
 
-        el.querySelector(".add").onclick = () => addFromHistory(name);
+        const select = el.querySelector(".lane-select");
+
+        el.querySelector(".add").onclick = () => {
+          addFromHistory(name, select.value);
+        };
 
         historyDiv.appendChild(el);
       });
   }
-
-//ELIMINADOS
-if (historyDiv && searchInput) {
-  const search = searchInput.value.toLowerCase();
-
-  getAllPlayers()
-    .filter(name => name.toLowerCase().includes(search))
-    .forEach(name => {
-      const el = document.createElement("div");
-      el.className = "card";
-
-      el.innerHTML = `
-        <span>${name}</span>
-
-        <select class="lane-select">
-          <option value="top">Top</option>
-          <option value="jg">Jungle</option>
-          <option value="mid">Mid</option>
-          <option value="adc">ADC</option>
-          <option value="sup">Support</option>
-        </select>
-
-        <button class="add">➕</button>
-      `;
-
-      const select = el.querySelector(".lane-select");
-
-      el.querySelector(".add").onclick = () => {
-        addFromHistory(name, select.value);
-      };
-
-      historyDiv.appendChild(el);
-    });
-    }
 }

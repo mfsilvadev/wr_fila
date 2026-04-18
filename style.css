@@ -1,8 +1,21 @@
+:root {
+  --radius: 14px;
+  --radius-sm: 10px;
+
+  --bg-main: #0f1115;
+  --bg-card: rgba(255,255,255,0.04);
+  --bg-soft: rgba(255,255,255,0.06);
+
+  --border: rgba(255,255,255,0.08);
+  --text: rgba(255,255,255,0.9);
+  --text-soft: rgba(255,255,255,0.6);
+}
+
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: radial-gradient(circle at top, #1a1a1a, #0d0d0d);
-  color: #eee;
+  font-family: "Inter", system-ui, sans-serif;
+  background: radial-gradient(circle at top, #151821, #0f1115);
+  color: var(--text);
   min-height: 100vh;
   flex-direction: column;
   display: flex;
@@ -20,13 +33,13 @@ body {
   margin: 40px auto;
   padding: 20px;
 
-  background: rgba(30, 30, 30, 0.6);
-  backdrop-filter: blur(10px);
+  background: rgba(20, 22, 30, 0.6);
+  backdrop-filter: blur(12px);
 
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
- flex: 1;
-  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+
+  box-shadow: 0 10px 40px rgba(0,0,0,0.4);
 }
 
 /* seção de inputs */
@@ -38,9 +51,9 @@ body {
   padding: 15px;
   margin-bottom: 20px;
 
-  background: rgba(255,255,255,0.04);
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(255,255,255,0.03);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
 }
 
 /* inputs */
@@ -53,11 +66,29 @@ input {
 input::placeholder {
   color: rgba(255,255,255,0.5);
 }
+input, select, button {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
 
-input, button {
-  padding: 8px;
-  border-radius: 6px;
-  border: none;
+  background: var(--bg-soft);
+  color: var(--text);
+
+  padding: 8px 10px;
+  font-size: 14px;
+
+  transition: 0.2s;
+}
+
+input::placeholder {
+  color: var(--text-soft);
+}
+
+button {
+  cursor: pointer;
+}
+
+button:hover {
+  background: rgba(255,255,255,0.12);
 }
 
 /* botão */
@@ -82,32 +113,39 @@ button:hover {
 .box {
   flex: 1;
 
-  background: rgba(255,255,255,0.03);
-  padding: 15px;
-  border-radius: 12px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
 
-  border: 1px solid rgba(255,255,255,0.08);
+  padding: 15px;
 }
 
 .box h2 {
-  margin-top: 0;
-  margin-bottom: 10px;
-
-  font-size: 18px;
-  border-bottom: 1px solid rgba(255,255,255,0.1);
-  padding-bottom: 5px;
+  margin: 0 0 10px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-soft);
 }
 
 /* cards individuais */
 .card {
-  background: rgba(255,255,255,0.05);
-  padding: 10px;
-  margin: 5px 0;
-  border-radius: 8px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+
+  padding: 10px 12px;
+  margin-bottom: 6px;
 
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  transition: 0.2s;
+}
+
+.card:hover {
+  background: var(--bg-soft);
+  transform: translateY(-1px);
 }
 
 /* lanes */
@@ -124,7 +162,7 @@ button:hover {
 
 /* lanes multiselect */
 .lane-select {
-  background: rgba(255,255,255,0.08); /* 👈 mesmo estilo dos inputs */
+  background: rgba(255,255,255,0.08);
   color: white;
 
   border: 1px solid rgba(255,255,255,0.1);
@@ -136,8 +174,9 @@ button:hover {
 }
 
 .lane-priority {
-  font-weight: bold;
+  font-weight: 600;
   margin-right: 6px;
+  opacity: 0.9;
 }
 
 /* cores por lane */
@@ -168,13 +207,24 @@ button:hover {
   margin-right: 5px;
 }
 
-#history::-webkit-scrollbar {
+#history {
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+#history .card {
+  background: transparent;
+  border: none;
+  padding: 6px 4px;
+}
+
+::-webkit-scrollbar {
   width: 6px;
 }
 
-#history::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.2);
-  border-radius: 4px;
+::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
 }
 
 .fade-in {
@@ -203,14 +253,6 @@ button:hover {
 
 .dragging-from-queue {
   opacity: 0.7;
-}
-.card {
-  transition: 0.2s;
-}
-
-.card:hover {
-  transform: translateY(-2px);
-  background: rgba(255,255,255,0.08);
 }
 
 .footer {
@@ -253,4 +295,69 @@ button:hover {
 .support a {
   color: #ff6b6b;
   font-weight: bold;
+}
+.lane-icon {
+  width: 18px;
+  height: 18px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  opacity: 0.5;
+  margin-left: 4px;
+
+  transition: 0.2s;
+}
+
+.lane-icon svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* destaque da lane ativa */
+.lane-icon.main {
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+/* cores */
+.lane-top { color: #ff6b6b; }
+.lane-jg { color: #51cf66; }
+.lane-mid { color: #74c0fc; }
+.lane-adc { color: #ffd43b; }
+.lane-sup { color: #b197fc; }
+
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  z-index: 999;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal-content {
+  background: rgba(20,20,25,0.95);
+  padding: 20px;
+  border-radius: 12px;
+  min-width: 250px;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+}
+
+.modal-actions {
+  margin-top: 15px;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
 }
