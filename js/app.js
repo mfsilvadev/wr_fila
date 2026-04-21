@@ -192,7 +192,7 @@ window.addEventListener("DOMContentLoaded", () => {
   const resetBtn = document.getElementById("resetBtn");
   if (resetBtn) resetBtn.onclick = resetAll;
 
-  document.getElementById("searchPlayer")?.addEventListener("input", update);
+  document.getElementById("searchQueue")?.addEventListener("input", update);
 
   let lastState = "";
 

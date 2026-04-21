@@ -31,6 +31,8 @@ export function render(handlers) {
   const queueDiv = document.getElementById("queue");
   const historyDiv = document.getElementById("history");
   const searchInput = document.getElementById("searchPlayer");
+  const queueSearchInput = document.getElementById("searchQueue");
+  const queueSearch = queueSearchInput?.value?.toLowerCase() || "";
 
   partyDiv.innerHTML = "";
   queueDiv.innerHTML = "";
@@ -95,7 +97,7 @@ export function render(handlers) {
   // ⏳ FILA
   const laneCounters = {};
 
-  state.queue.forEach(p => {
+  state.queue.filter(p => p.name.toLowerCase().includes(queueSearch)).forEach(p => {
     const el = document.createElement("div");
     el.className = "card";
     el.draggable = true;

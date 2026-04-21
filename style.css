@@ -438,3 +438,18 @@ select:focus {
   width: 14px;
   height: 14px;
 }
+
+/* scroll da fila */
+#queue {
+  max-height: 220px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* input da fila */
+#searchQueue {
+  width: 100%;
+  margin-bottom: 10px;
+}
