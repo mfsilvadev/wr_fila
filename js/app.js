@@ -128,6 +128,10 @@ function moveToParty(id) {
   const player = state.queue.find(p => p.id === id);
   if (!player) return;
 
+  const canFit = player.lanes.some(l => !laneExists(l)) && hasSpace();
+
+  if (!canFit) return;
+
   removeFromQueue(id);
   addToParty(player);
 
@@ -152,6 +156,18 @@ function resetAll() {
   location.reload();
 }
 
+function changeLane(id, newLane) {
+  const player = state.party.find(p => p.id === id);
+  if (!player) return;
+
+  // evita duplicar lane
+  if (laneExists(newLane)) return;
+
+  player.assignedLane = newLane;
+
+  update();
+}
+
 //update
 function update() {
   save();
@@ -162,7 +178,8 @@ function update() {
     addFromHistory,
     moveToParty,
     moveToQueue,
-    addFromEliminated
+    addFromEliminated,
+    changeLane
   });
 }
 
@@ -180,7 +197,8 @@ window.addEventListener("DOMContentLoaded", () => {
     addFromHistory,
     moveToParty,
     moveToQueue,
-    addFromEliminated
+    addFromEliminated,
+    changeLane
   });
 
   const addBtn = document.getElementById("addBtn");

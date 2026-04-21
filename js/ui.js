@@ -57,7 +57,14 @@ export function render(handlers) {
       el.innerHTML = `
         <span>
           ${p.name}
-          ${renderLaneIcons(p.lanes, p.assignedLane)}
+
+          <select class="lane-edit">
+            ${p.lanes.map(lane => `
+              <option value="${lane}" ${lane === p.assignedLane ? "selected" : ""}>
+                ${lane.toUpperCase()}
+              </option>
+            `).join("")}
+          </select>
 
           <span class="lives">
             <i data-lucide="heart"></i> ${p.lives}
@@ -82,6 +89,7 @@ export function render(handlers) {
       el.querySelector(".remove").onclick = () => remove(p.id);
       el.querySelector(".lose").onclick = () => loseLife(p.id);
       el.querySelector(".continue").onclick = () => addLife(p.id);
+      el.querySelector(".lane-edit").onchange = (e) => {handlers.changeLane(p.id, e.target.value);};
 
     } else {
       el.className = "card empty";

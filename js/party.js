@@ -21,9 +21,11 @@ export function assignLane(player) {
 
 export function addToParty(player) {
   const lane = assignLane(player);
+
   if (!lane) return;
 
-  player.assignedLane = lane;
+  player.assignedLane = player.assignedLane || lane;
+
   state.party.push(player);
 }
 
